@@ -1,0 +1,63 @@
+/* ============================================
+   LETSCYCLETORECYCLE - BRAND STYLES
+   File: static/brand-styles.css
+   ============================================ */
+
+/* Circular Logo Styling */
+.logo-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #198754; /* Bootstrap success green */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.logo-circle:hover {
+    transform: scale(1.03);
+}
+
+/* Brand Header Container */
+.brand-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+}
+
+/* Brand Title - LetsCycleToRecycle */
+.brand-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #198754;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+}
+
+/* Brand Subtitle */
+.brand-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Responsive sizing for mobile */
+@media (max-width: 768px) {
+    .logo-circle {
+        width: 120px;
+        height: 120px;
+        border-width: 2px;
+    }
+    
+    .brand-title {
+        font-size: 1.7rem;
+    }
+    
+    .brand-subtitle {
+        font-size: 0.95rem;
+    }
+}
