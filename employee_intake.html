@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Intake - LetsCycleToRecycle</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+
+    <!-- Shared brand styles (logo, header, etc.) -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='brand-styles.css') }}"
+    >
+</head>
+<body class="bg-light">
+
+<div class="container py-5" style="max-width: 720px;">
+
+    <!-- ============ BRANDING HEADER WITH CIRCULAR LOGO ============ -->
+    <div class="brand-header">
+        <img
+            src="{{ url_for('static', filename='logo.png') }}"
+            alt="LetsCycleToRecycle Logo"
+            class="logo-circle"
+        >
+        <h1 class="brand-title">LetsCycleToRecycle</h1>
+        <p class="brand-subtitle">
+            Record incoming devices and generate QR codes for customer tracking.
+        </p>
+    </div>
+
+    <!-- ============ PAGE HEADER ============ -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-success mb-0">Device Intake Form</h2>
+            <small class="text-muted">
+                Use this form when a customer drops off an e-waste device.
+            </small>
+        </div>
+        <!-- Navigation back to dashboard -->
+        <a href="{{ url_for('employee_dashboard') }}" class="btn btn-outline-secondary btn-sm">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <!-- ============ MESSAGE ALERT (ERROR ONLY) ============ -->
+    {% if message %}
+        <div
+            class="alert alert-{{ 'success' if message.type == 'success' else 'danger' }} alert-dismissible fade show"
+            role="alert"
+        >
+            {{ message.text }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endif %}
+
+    <!-- ============ INTAKE FORM CARD ============ -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            
+            <!-- POST form submits to /employee/intake route -->
+            <form method="post">
+
+                <!-- ======== DEVICE IDENTIFICATION ======== -->
+                <div class="mb-3">
+                    <label class="form-label">Device ID (MAC Address)</label>
+                    <input
+                        type="text"
+                        name="mac_address"
+                        class="form-control"
+                        placeholder="e.g., 9a:4b:7c:12:ff:09"
+                        pattern="[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}"
+                        required
+                    >
+                    <small class="text-muted">
+                        This MAC address is encoded into the QR code and used on the customer tracking page.
+                    </small>
+                </div>
+
+                <!-- ======== DEVICE DETAILS ======== -->
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Device Type *</label>
+                        <input
+                            type="text"
+                            name="device_type"
+                            class="form-control"
+                            placeholder="e.g., Laptop, Smart Speaker"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Make (Brand)</label>
+                        <input
+                            type="text"
+                            name="make"
+                            class="form-control"
+                            placeholder="e.g., Apple, LG"
+                        >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Model</label>
+                        <input
+                            type="text"
+                            name="model"
+                            class="form-control"
+                            placeholder="e.g., MacBook Pro 16&quot;"
+                        >
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Serial Number</label>
+                        <input
+                            type="text"
+                            name="serial_no"
+                            class="form-control"
+                            placeholder="Manufacturer serial number"
+                        >
+                    </div>
+                </div>
+
+                <!-- ======== CUSTOMER INFORMATION ======== -->
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Customer Name</label>
+                        <input
+                            type="text"
+                            name="customer_name"
+                            class="form-control"
+                            placeholder="e.g., James Smith"
+                        >
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Customer Email</label>
+                        <input
+                            type="email"
+                            name="customer_email"
+                            class="form-control"
+                            placeholder="e.g., james@example.com"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- ======== ORDER DETAILS ======== -->
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Drop-off Site</label>
+                        <input
+                            type="text"
+                            name="dropoff_site"
+                            class="form-control"
+                            placeholder="e.g., Youngstown Main Facility"
+                        >
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Initial Status</label>
+                        <select name="status" class="form-select">
+                            <option value="Received" selected>Received</option>
+                            <option value="InProcess">In Process</option>
+                            <option value="Recycled">Recycled</option>
+                            <option value="Refurbished">Refurbished</option>
+                            <option value="Returned">Returned</option>
+                            <option value="Disposed">Disposed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ======== TECHNICIAN NOTES ======== -->
+                <div class="mb-3">
+                    <label class="form-label">Notes</label>
+                    <textarea
+                        name="notes"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Optional technician notes about condition, visible damage, or hazards."
+                    ></textarea>
+                </div>
+
+                <!-- ======== SUBMIT BUTTON ======== -->
+                <button type="submit" class="btn btn-success w-100">
+                    Submit Intake & Generate QR
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ QUICK NAVIGATION ============ -->
+    <p class="mt-3 text-center">
+        <small class="text-muted">
+            Customer view: <a href="{{ url_for('track_device') }}">Open device tracking portal</a>
+        </small>
+    </p>
+
+</div>
+
+<!-- Bootstrap JS Bundle (for alert dismiss button) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

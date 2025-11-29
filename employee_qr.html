@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generated - LetsCycleToRecycle</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    >
+
+    <!-- Shared brand styles (logo, header, etc.) -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='brand-styles.css') }}"
+    >
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <!-- ============ BRANDING HEADER WITH CIRCULAR LOGO ============ -->
+    <div class="brand-header">
+        <img
+            src="{{ url_for('static', filename='logo.png') }}"
+            alt="LetsCycleToRecycle Logo"
+            class="logo-circle"
+        >
+        <h1 class="brand-title">LetsCycleToRecycle</h1>
+        <p class="brand-subtitle">
+            Track the recycling progress of your electronic device using your QR-code.
+        </p>
+    </div>
+
+    <!-- ============ QR CODE SUCCESS MESSAGE ============ -->
+    <div class="alert alert-success" role="alert">
+        Device <strong>{{ device_id }}</strong> has been registered.
+    </div>
+
+    <!-- ============ QR CODE DETAILS CARD ============ -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            
+            <!-- Device MAC Address -->
+            <h5 class="card-title text-success">Device MAC Address</h5>
+            <p class="font-monospace" style="color: #c2185b; font-size: 1.1rem; font-weight: 500;">
+                {{ mac_addr }}
+            </p>
+
+            <!-- Public Tracking URL -->
+            <h5 class="card-title text-success mt-4">Public Tracking URL</h5>
+            <p>
+                <a href="{{ track_url }}" target="_blank">{{ track_url }}</a>
+            </p>
+
+            <!-- QR Code Display -->
+            <h5 class="card-title text-success mt-4">QR Code</h5>
+            <div class="text-center my-4">
+                <!-- QR images are saved as qr_codes/<device_id>.png -->
+                <img
+                    src="/qr_codes/{{ qr_filename }}"
+                    alt="QR Code for {{ mac_addr }}"
+                    class="img-fluid"
+                    style="max-width: 300px;"
+                >
+            </div>
+
+            <p class="text-muted small">
+                This QR code can be scanned by anyone on any WiFi. Perfect for presentation demo.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2 mt-4">
+                <a href="{{ track_url }}" class="btn btn-success btn-lg">
+                    Open Customer Tracking Page →
+                </a>
+                <a href="/employee/dashboard" class="btn btn-outline-secondary">
+                    Back to Dashboard
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ============ EMPLOYEE PORTAL LINK ============ -->
+    <p class="mt-3 text-center">
+        <small class="text-muted">
+            Employee portal →
+            <a href="/employee/login">Login</a>
+            or
+            <a href="/employee/intake">Device Intake</a>
+        </small>
+    </p>
+
+</div>
+
+</body>
+</html>
